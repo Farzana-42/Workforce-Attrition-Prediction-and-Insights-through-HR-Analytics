@@ -1,0 +1,6 @@
+metric,value
+rows,2381.0
+unique_emp_ids,2381.0
+attrition_yes,1616.0
+attrition_no,765.0
+attrition_rate,0.6787
