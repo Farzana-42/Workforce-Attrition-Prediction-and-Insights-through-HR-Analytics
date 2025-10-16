@@ -1,4 +1,4 @@
-MMM-YY,Emp_ID,Age,Gender,City,Education_Level,Salary,Dateofjoining,LastWorkingDate,Joining Designation,Designation,Total Business Value,Quarterly Rating,Attrition,End Date,TenureMonths.
+MMM-YY,Emp_ID,Age,Gender,City,Education_Level,Salary,Dateofjoining,LastWorkingDate,Joining Designation,Designation,Total Business Value,Quarterly Rating,Attrition,End Date,TenureMonths
 01-01-2016,1,28,Male,C23,Master,57387,24-12-2015,,1,1,2381060,2,No,01-01-2016,0
 01-02-2016,1,28,Male,C23,Master,57387,24-12-2015,,1,1,-665480,2,No,01-02-2016,1
 01-03-2016,1,28,Male,C23,Master,57387,24-12-2015,11-03-2016,1,1,0,2,Yes,11-03-2016,2
