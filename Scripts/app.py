@@ -476,13 +476,19 @@ def display_results(user_df, predictions):
         
         st.dataframe(styled_df, use_container_width=True, height=400)
     
-    # Visualizations
+    # --- Unified color scheme and consistent order ---
+    RISK_ORDER = ['🟢 Low', '🟡 Medium', '🔴 High']
+    RISK_COLORS = {
+        '🟢 Low': '#2ecc71',     # green
+        '🟡 Medium': '#f1c40f',  # yellow
+        '🔴 High': '#e74c3c',    # red
+    }
+
     st.write("### Risk Analysis")
-    
     col1, col2 = st.columns(2)
-    
+
     with col1:
-        # Risk distribution histogram
+        # Risk distribution histogram (single red tone)
         fig = px.histogram(
             user_df,
             x='Attrition_Risk_Score',
@@ -491,19 +497,41 @@ def display_results(user_df, predictions):
             labels={'Attrition_Risk_Score': 'Risk Score (%)'},
             color_discrete_sequence=['#e74c3c']
         )
+        fig.update_layout(
+            xaxis_title="Risk Score (%)",
+            yaxis_title="Count",
+            title_x=0.3
+        )
         st.plotly_chart(fig, use_container_width=True)
-    
+
     with col2:
-        # Risk level pie chart
-        risk_counts = user_df['Risk_Level'].value_counts()
-        fig = go.Figure(data=[go.Pie(
-            labels=risk_counts.index,
-            values=risk_counts.values,
-            marker=dict(colors=['#4caf50', '#ffc107', '#f44336']),
-            hole=0.3
-        )])
-        fig.update_layout(title="Risk Level Distribution")
+        # Risk level donut chart (consistent legend order & colors)
+        risk_counts = (
+            user_df['Risk_Level']
+            .value_counts()
+            .reindex(RISK_ORDER)
+            .fillna(0)
+            .reset_index()
+            .rename(columns={'index': 'Risk_Level', 'Risk_Level': 'count'})
+        )
+
+        fig = px.pie(
+            risk_counts,
+            names='Risk_Level',
+            values='count',
+            hole=0.4,
+            category_orders={'Risk_Level': RISK_ORDER},
+            color='Risk_Level',
+            color_discrete_map=RISK_COLORS,
+        )
+        fig.update_traces(sort=False, textinfo='percent+label')
+        fig.update_layout(
+            title="Risk Level Distribution",
+            legend_traceorder='normal',
+            title_x=0.3
+        )
         st.plotly_chart(fig, use_container_width=True)
+
     
     # Additional analysis by category
     if 'City' in user_df.columns:
